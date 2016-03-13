@@ -1,6 +1,5 @@
 package net.zombie_sama.fanfou.activity;
 
-import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -16,10 +15,13 @@ import com.yolanda.nohttp.Response;
 import net.zombie_sama.fanfou.R;
 import net.zombie_sama.fanfou.base.BaseActivity;
 import net.zombie_sama.fanfou.base.BaseApplication;
+import net.zombie_sama.fanfou.network.NetworkController;
 import net.zombie_sama.fanfou.utils.Utils;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import butterknife.Bind;
 
@@ -52,19 +54,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_signin:
-
+                //获取用户名和密码
                 username = et_username.getText().toString();
                 password = et_password.getText().toString();
-                Map<String, String> param = new HashMap<String, String>();
-                param.put("x_auth_username", "username");
-                param.put("x_auth_password", "password");
-                param.put("x_auth_mode", "client_auth");
-                Utils.getBaseString("http://api.fanfou.com/account/verify_credentials.xml",param);
-                RequestQueue queue = ((BaseApplication) getApplication()).getRequestQueue();
-                Request<String> request = NoHttp.createStringRequest(getString(R.string.base_url) + getString(R.string.access_token_url), RequestMethod.POST);
-                request.add("x_auth_username", "username");
-                // 添加到队列
-                queue.add(0, request, this);
+                NetworkController.login(this,username,password,this);
+
                 break;
             case R.id.tv_signup:
                 break;
@@ -78,9 +72,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void onSucceed(int what, Response<String> response) {
-        Intent intent = new Intent(this, ResultActivity.class);
-        intent.putExtra("result", response.get());
-        startActivity(intent);
+        Log.d("登陆响应", response.get());
     }
 
     @Override
