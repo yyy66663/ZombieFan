@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.SharedPreferences;
 
 import com.yolanda.nohttp.NoHttp;
-import com.yolanda.nohttp.RequestQueue;
 
 public class BaseApplication extends Application{
 

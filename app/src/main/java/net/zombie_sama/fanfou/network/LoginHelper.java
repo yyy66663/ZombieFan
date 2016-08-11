@@ -2,6 +2,8 @@ package net.zombie_sama.fanfou.network;
 
 import android.util.Log;
 
+import net.zombie_sama.fanfou.utils.L;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Arrays;
@@ -36,14 +38,16 @@ public class LoginHelper {
                 stringBuilder.append("&");
         }
         String base_string = stringBuilder.toString();
-        Log.d("base string", base_string);
+        L.i("base string = " + base_string);
         return base_string;
     }
+
     private static String encodeString(String base_string) throws UnsupportedEncodingException {
         String encode_string = URLEncoder.encode(base_string);
-        Log.d("encode base string", encode_string);
+        L.i("encode base string = " + encode_string);
         return encode_string;
     }
+
     private static String HmacSHA1(String str, String secret) throws Exception {
         Mac mac = Mac.getInstance("HmacSHA1");
         mac.init(new SecretKeySpec((secret + '&').getBytes(), "HmacSHA1"));
@@ -55,6 +59,7 @@ public class LoginHelper {
         Log.d("HmacSHA1", sb.toString());
         return sb.toString();
     }
+
     private static String byteToHexString(byte ib) {
         char[] Digit = {
                 '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
